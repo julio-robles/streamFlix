@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-20T22:14:06+0200",
+    date = "2025-05-20T23:30:32+0200",
     comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.4 (Oracle Corporation)"
 )
 @Component
@@ -28,15 +28,6 @@ public class RentalMapperImpl implements RentalMapper {
         String status = null;
         BigDecimal price = null;
         OffsetDateTime expiresAt = null;
-
-        id = entity.getId();
-        userId = entity.getUserId();
-        movieId = entity.getMovieId();
-        if ( entity.getStatus() != null ) {
-            status = entity.getStatus().name();
-        }
-        price = entity.getPrice();
-        expiresAt = entity.getExpiresAt();
 
         RentalResponseDto rentalResponseDto = new RentalResponseDto( id, userId, movieId, status, price, expiresAt );
 
