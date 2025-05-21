@@ -1,5 +1,6 @@
 package com.example.streamflix.profile;
 
+import com.example.streamflix.profile.service.ProfileService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class ProfileSecurityTest {
 
-    @Autowired ProfileService service;
+    @Autowired
+    ProfileService service;
 
     @Test
     @WithMockUser(roles = "ADMIN")   // crea usuario con ROLE_ADMIN
