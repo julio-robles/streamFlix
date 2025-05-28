@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "valoraciones")
+@Table(name = "ratings", uniqueConstraints = @UniqueConstraint(name = "unique_user_movie_rating", columnNames = {"user_id", "movie_id"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,19 +21,19 @@ public class Rating {
   private Long id;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "movie_id", nullable = false)
+  @JoinColumn(name = "movie_id", nullable = false, foreignKey = @ForeignKey(name = "fk_ratings_movie"))
   private Movie movie;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "usuario_id", nullable = false)
-  private Usuario usuario;
+  @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_ratings_user"))
+  private User user;
 
-  @Column(nullable = false)
-  private Integer puntuacion; // 1-5
+  @Column(name = "score", nullable = false)
+  private Integer score; // 1-5
 
-  @Column(length = 1000)
-  private String comentario;
+  @Column(name = "comment", columnDefinition = "TEXT")
+  private String comment;
 
-  @Column(name = "fecha_valoracion", nullable = false)
-  private LocalDateTime fechaValoracion;
+  @Column(name = "rating_date", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+  private LocalDateTime ratingDate;
 }
