@@ -1,0 +1,67 @@
+paths:
+  /api/movies:
+    post:
+      summary: Crear una nueva película
+      responses:
+        '200':
+          description: Película creada exitosamente
+        '403':
+          description: Solo los administradores pueden crear películas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/movies/{id}:
+    get:
+      summary: Obtener película por ID
+      responses:
+        '200':
+          description: Película encontrada
+        '404':
+          description: Película no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Actualizar película
+      responses:
+        '200':
+          description: Película actualizada
+        '403':
+          description: Solo los administradores pueden actualizar películas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Película no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Eliminar película
+      responses:
+        '204':
+          description: Película eliminada
+        '403':
+          description: Solo los administradores pueden eliminar películas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Película no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
