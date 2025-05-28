@@ -36,8 +36,8 @@ public class Movie {
     @Column(name = "genre")
     private List<String> genres;
 
-    @Column(name = "duration_minutes")
-    private Integer durationMinutes;
+    @Column(name = "duration")
+    private Integer duration;
 
     @Column(name = "age_rating")
     private String ageRating;
