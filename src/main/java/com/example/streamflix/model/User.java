@@ -24,7 +24,7 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "role", nullable = false, columnDefinition = "ENUM('USER', 'ADMIN') DEFAULT 'USER'")
-  private Rol role;
+  private Role role;
 
   @Column(name = "registration_date", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
   private LocalDateTime registrationDate;
