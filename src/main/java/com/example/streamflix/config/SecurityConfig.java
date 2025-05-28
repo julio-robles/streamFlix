@@ -28,16 +28,29 @@ public class SecurityConfig {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
+ //desactivamos el filtro JWT para que no de error al iniciar la aplicacion
+//  @Bean
+//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    http.csrf(AbstractHttpConfigurer::disable)
+//        .authorizeHttpRequests(auth -> auth
+//            .requestMatchers("/api/auth/**").permitAll()
+//            .anyRequest().authenticated()
+//        )
+//        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//    return http.build();
+//  }
+
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**").permitAll()
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    http.csrf().disable()
+        .authorizeHttpRequests()
+        .requestMatchers("/api/users/login", "/api/users").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .httpBasic();
 
     return http.build();
   }
-
 }
