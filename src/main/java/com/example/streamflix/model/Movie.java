@@ -1,4 +1,4 @@
-package com.example.streamflix.entity;
+package com.example.streamflix.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
