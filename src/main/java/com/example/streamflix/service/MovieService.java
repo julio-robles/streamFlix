@@ -1,9 +1,11 @@
 package com.example.streamflix.service;
 
+import com.example.streamflix.exception.MovieNotFoundException;
 import com.example.streamflix.model.Movie;
 import com.example.streamflix.model.User;
 import com.example.streamflix.model.Role;
 import com.example.streamflix.repository.MovieRepository;
+import com.example.streamflix.exception.UnauthorizedActionException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class MovieService {
 
     public Movie createMovie(Movie movie, User user) {
         if (user.getRole() != Role.ADMIN) {
-            throw new SecurityException("Only administrators can create movies.");
+            throw new UnauthorizedActionException("Solo los administradores pueden crear películas.");
         }
         return movieRepository.save(movie);
     }
@@ -27,32 +29,30 @@ public class MovieService {
     }
 
     public Movie findById(Long id) {
-        return movieRepository.findById(id).orElse(null);
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("Película no encontrada con id: " + id));
     }
 
     public Movie updateMovie(Long id, Movie movieDetails, User user) {
         if (user.getRole() != Role.ADMIN) {
-            throw new SecurityException("Only administrators can update movies.");
+            throw new UnauthorizedActionException("Solo los administradores pueden actualizar películas.");
         }
-        Movie movie = movieRepository.findById(id).orElse(null);
-        if (movie == null) {
-            return null;
-        }
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new MovieNotFoundException("Película no encontrada con id: " + id));
         movie.setTitle(movieDetails.getTitle());
         movie.setDescription(movieDetails.getDescription());
         movie.setReleaseYear(movieDetails.getReleaseYear());
         movie.setGenres(movieDetails.getGenres());
         movie.setAgeRating(movieDetails.getAgeRating());
-        // Actualiza otros campos según tu entidad Movie
         return movieRepository.save(movie);
     }
 
     public boolean deleteMovie(Long id, User user) {
         if (user.getRole() != Role.ADMIN) {
-            throw new SecurityException("Solo los administradores pueden eliminar películas.");
+            throw new UnauthorizedActionException("Solo los administradores pueden eliminar películas.");
         }
         if (!movieRepository.existsById(id)) {
-            return false;
+            throw new MovieNotFoundException("Película no encontrada con id: " + id);
         }
         movieRepository.deleteById(id);
         return true;
