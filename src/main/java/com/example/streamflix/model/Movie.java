@@ -51,8 +51,12 @@ public class Movie {
     private LocalDateTime addedDate;
 
     // Si quieres mantener los géneros, puedes dejarlo así:
-    @ElementCollection
-    @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
-    @Column(name = "genre")
-    private List<String> genres;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres;
+
 }
