@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +41,17 @@ public class UserService {
       throw new IllegalArgumentException("Contraseña incorrecta.");
     }
     return user;
+  }
+
+  // Obtener usuario por ID
+  public User getUserById(Long id) {
+  return usuarioRepository.findById(id)
+                          .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
+  }
+
+  // Obtener todos los usuarios
+  public List<User> getAllUsers() {
+      return usuarioRepository.findAll();
   }
 
   // Obtener perfil de usuario
