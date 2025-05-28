@@ -55,19 +55,4 @@ public class Movie {
     @CollectionTable(name = "movie_genres", joinColumns = @JoinColumn(name = "movie_id"))
     @Column(name = "genre")
     private List<String> genres;
-
-    @Column(name = "duration")
-    private Integer duration;
-
-    @Column(name = "age_rating")
-    private String ageRating;
-
-    @Column(name = "cover_image_url")
-    private String coverImageUrl;
-
-    @Column(name = "average_rating")
-    private Double averageRating;
-
-    @Column(name = "added_date")
-    private LocalDate addedDate;
 }
