@@ -76,7 +76,7 @@ public class UserService {
       throw new IllegalArgumentException("La contraseña actual es incorrecta.");
     }
     user.setPassword(passwordEncoder.encode(newPassword));
-    usuarioRepository.save(user);
+    usuarioRepository.updatePassword(id, user.getPassword());
   }
 
   // Gestión de roles (solo administradores)
