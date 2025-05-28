@@ -99,4 +99,7 @@ public class UserService {
     return usuarioRepository.findById(id);
   }
 
+  public boolean validatePassword(String rawPassword, String encodedPassword) {
+    return passwordEncoder.matches(rawPassword, encodedPassword);
+  }
 }
