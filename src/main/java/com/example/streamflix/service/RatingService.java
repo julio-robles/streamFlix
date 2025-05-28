@@ -24,12 +24,12 @@ public class RatingService {
 
   // Obtener valoraciones de una película
   public List<Rating> getRatingsByMovie(Movie movie) {
-    return ratingRepository.findByMovie(movie);
+    return ratingRepository.findByMovieId(movie);
   }
 
   // Obtener valoraciones realizadas por un usuario
   public List<Rating> getRatingsByUser(User user) {
-    return ratingRepository.findByUser(user);
+    return ratingRepository.findByUserId(user);
   }
 
   // Eliminar valoración propia
