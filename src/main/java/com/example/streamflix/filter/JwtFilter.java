@@ -1,6 +1,6 @@
 package com.example.streamflix.filter;
 
-import com.example.streamflix.util.JwtUtil;
+import com.example.streamflix.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
