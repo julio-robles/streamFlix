@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface UsuarioRepository extends JpaRepository<User, Long> {
-    Optional<User> findByNombreUsuario(String nombreUsuario);
-    Optional<User> findByCorreoElectronico(String correoElectronico);
-    boolean existsByNombreUsuario(String nombreUsuario);
-    boolean existsByCorreoElectronico(String correoElectronico);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String nombreUsuario);
+    Optional<User> findByEmail(String correoElectronico);
+    boolean existsByUsername(String nombreUsuario);
+    boolean existsByEmail(String correoElectronico);
 
     @Modifying
     @Transactional

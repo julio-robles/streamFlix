@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RatingRepository extends JpaRepository<Rating, Long> {
-    List<Rating> findByMovieId(Long movieId);
-    List<Rating> findByUserId(Long userId);
-    boolean existsByUserIdAndMovieId(Long userId, Long movieId);
+    List<Rating> findByMovieId(Integer movieId);
+    List<Rating> findByUserId(Integer userId);
+    boolean existsByUserIdAndMovieId(Integer userId, Integer movieId);
 }

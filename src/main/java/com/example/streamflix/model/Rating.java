@@ -20,7 +20,7 @@ public class Rating {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "movie_id", nullable = false, foreignKey = @ForeignKey(name = "fk_ratings_movie"))

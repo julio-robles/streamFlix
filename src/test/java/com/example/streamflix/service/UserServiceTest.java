@@ -3,7 +3,7 @@ package com.example.streamflix.service;
 import com.example.streamflix.exception.IncorrectPasswordException;
 import com.example.streamflix.model.Role;
 import com.example.streamflix.model.User;
-import com.example.streamflix.repository.UsuarioRepository;
+import com.example.streamflix.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private UserRepository usuarioRepository;
 
     @Mock
     private PasswordEncoder passwordEncoder;

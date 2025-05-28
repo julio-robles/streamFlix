@@ -3,7 +3,7 @@ package com.example.streamflix.service;
 import com.example.streamflix.exception.IncorrectPasswordException;
 import com.example.streamflix.model.User;
 import com.example.streamflix.model.Role;
-import com.example.streamflix.repository.UsuarioRepository;
+import com.example.streamflix.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class UserService {
 
   @Autowired
-  private UsuarioRepository usuarioRepository;
+  private UserRepository usuarioRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
 
   // Registro de nuevos usuarios
   public User registerUser(User user) {
-    if (usuarioRepository.existsByNombreUsuario(user.getUsername())) {
+    if (usuarioRepository.existsByUsername(user.getUsername())) {
       throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
     }
-    if (usuarioRepository.existsByCorreoElectronico(user.getEmail())) {
+    if (usuarioRepository.existsByEmail(user.getEmail())) {
       throw new IllegalArgumentException("El correo electrónico ya está en uso.");
     }
     user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -36,7 +36,7 @@ public class UserService {
 
   // Autenticación de usuarios (login)
   public User authenticateUser(String username, String password) {
-    User user = usuarioRepository.findByNombreUsuario(username)
+    User user = usuarioRepository.findByEmail(username)
             .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
     if (!passwordEncoder.matches(password, user.getPassword())) {
       throw new IncorrectPasswordException("Contraseña incorrecta.");
@@ -92,7 +92,7 @@ public class UserService {
   }
 
   public Optional<User> findByUsername(String username) {
-    return usuarioRepository.findByNombreUsuario(username);
+    return usuarioRepository.findByUsername(username);
   }
 
   public Optional<User> findById(Long id) {
