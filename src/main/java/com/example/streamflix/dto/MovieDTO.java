@@ -1,8 +1,17 @@
 package com.example.streamflix.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MovieDTO {
     private Long id;
     private String title;
@@ -16,5 +25,5 @@ public class MovieDTO {
     private Double averageRating;
     private LocalDate addedDate;
 
-    // Getters y setters
+
 }
