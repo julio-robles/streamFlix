@@ -1,6 +1,6 @@
 package com.example.streamflix.repository;
 
-import com.example.streamflix.entity.Movie;
+import com.example.streamflix.model.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,4 +40,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Page<Movie> findByReleaseYearAndAgeRatingIgnoreCase(
             Integer releaseYear, String ageRating, Pageable pageable
     );
+
+    Page<Movie> findByAgeRatingIgnoreCase(String ageRating, Pageable pageable);
+
 }
