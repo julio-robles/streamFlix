@@ -1,5 +1,6 @@
 package com.example.streamflix.service;
 
+import com.example.streamflix.exception.UnauthorizedRatingDeletionException;
 import com.example.streamflix.model.Rating;
 import com.example.streamflix.model.Movie;
 import com.example.streamflix.model.User;
@@ -35,9 +36,9 @@ public class RatingService {
   // Eliminar valoración propia
   public void deleteOwnRating(Long ratingId, User user) {
     Rating rating = ratingRepository.findById(ratingId)
-                                    .orElseThrow(() -> new IllegalArgumentException("Valoración no encontrada."));
+            .orElseThrow(() -> new IllegalArgumentException("Valoración no encontrada."));
     if (!rating.getUser().equals(user)) {
-      throw new SecurityException("No puedes eliminar valoraciones de otros usuarios.");
+      throw new UnauthorizedRatingDeletionException("No puedes eliminar valoraciones de otros usuarios.");
     }
     ratingRepository.deleteById(ratingId);
   }

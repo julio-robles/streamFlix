@@ -1,67 +1,337 @@
+openapi: 3.0.3
+info:
+  title: StreamFlix API
+  version: 1.0.0
+servers:
+  - url: /api
 paths:
-  /api/movies:
+  /users:
     post:
-      summary: Crear una nueva película
+      summary: Crear un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       responses:
         '200':
-          description: Película creada exitosamente
-        '403':
-          description: Solo los administradores pueden crear películas
+          description: Usuario creado
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
-  /api/movies/{id}:
+                $ref: '#/components/schemas/User'
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Usuario no encontrado
+  /movies:
+    post:
+      summary: Crear película
+      parameters:
+        - in: query
+          name: user
+          required: true
+          schema:
+            $ref: '#/components/schemas/User'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        '200':
+          description: Película creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '403':
+          description: No autorizado
+    get:
+      summary: Listar películas (paginado)
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Página de películas
+          content:
+            application/json:
+              schema:
+                type: object
+  /movies/{id}:
     get:
       summary: Obtener película por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Película encontrada
-        '404':
-          description: Película no encontrada
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Película no encontrada
     put:
       summary: Actualizar película
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: user
+          required: true
+          schema:
+            $ref: '#/components/schemas/User'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
       responses:
         '200':
           description: Película actualizada
-        '403':
-          description: Solo los administradores pueden actualizar películas
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/Movie'
+        '403':
+          description: No autorizado
         '404':
           description: Película no encontrada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Eliminar película
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: user
+          required: true
+          schema:
+            $ref: '#/components/schemas/User'
       responses:
         '204':
-          description: Película eliminada
+          description: Eliminado correctamente
         '403':
-          description: Solo los administradores pueden eliminar películas
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+          description: No autorizado
         '404':
           description: Película no encontrada
+  /movies/search:
+    get:
+      summary: Buscar películas
+      parameters:
+        - in: query
+          name: title
+          schema:
+            type: string
+        - in: query
+          name: genre
+          schema:
+            type: string
+        - in: query
+          name: releaseYear
+          schema:
+            type: integer
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resultados de búsqueda
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                type: object
+  /movies/filter:
+    get:
+      summary: Filtrar películas
+      parameters:
+        - in: query
+          name: genre
+          schema:
+            type: string
+        - in: query
+          name: releaseYear
+          schema:
+            type: integer
+        - in: query
+          name: ageRating
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: size
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resultados de filtrado
+          content:
+            application/json:
+              schema:
+                type: object
+  /ratings/movie/{movieId}:
+    post:
+      summary: Añadir valoración a una película
+      parameters:
+        - in: path
+          name: movieId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        '200':
+          description: Valoración añadida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+    get:
+      summary: Obtener valoraciones de una película
+      parameters:
+        - in: path
+          name: movieId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de valoraciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+  /ratings/user/{userId}:
+    get:
+      summary: Obtener valoraciones de un usuario
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de valoraciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rating'
+  /ratings/{ratingId}:
+    delete:
+      summary: Eliminar valoración propia
+      parameters:
+        - in: path
+          name: ratingId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Valoración eliminada
+        '403':
+          description: No autorizado
 
 components:
   schemas:
-    ErrorResponse:
+    User:
       type: object
       properties:
-        message:
+        id:
+          type: integer
+        username:
           type: string
+        email:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        genre:
+          type: string
+        releaseYear:
+          type: integer
+        ageRating:
+          type: string
+    Rating:
+      type: object
+      properties:
+        id:
+          type: integer
+        score:
+          type: integer
+        comment:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        movie:
+          $ref: '#/components/schemas/Movie'

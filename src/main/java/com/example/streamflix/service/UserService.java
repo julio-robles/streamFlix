@@ -1,5 +1,6 @@
 package com.example.streamflix.service;
 
+import com.example.streamflix.exception.IncorrectPasswordException;
 import com.example.streamflix.model.User;
 import com.example.streamflix.model.Role;
 import com.example.streamflix.repository.UsuarioRepository;
@@ -36,9 +37,9 @@ public class UserService {
   // Autenticación de usuarios (login)
   public User authenticateUser(String username, String password) {
     User user = usuarioRepository.findByNombreUsuario(username)
-                                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
     if (!passwordEncoder.matches(password, user.getPassword())) {
-      throw new IllegalArgumentException("Contraseña incorrecta.");
+      throw new IncorrectPasswordException("Contraseña incorrecta.");
     }
     return user;
   }
@@ -71,9 +72,9 @@ public class UserService {
   // Cambiar contraseña
   public void changePassword(Long id, String oldPassword, String newPassword) {
     User user = usuarioRepository.findById(id)
-                                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
     if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-      throw new IllegalArgumentException("La contraseña actual es incorrecta.");
+      throw new IncorrectPasswordException("La contraseña actual es incorrecta.");
     }
     user.setPassword(passwordEncoder.encode(newPassword));
     usuarioRepository.updatePassword(id, user.getPassword());
@@ -88,5 +89,13 @@ public class UserService {
                                  .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado."));
     user.setRole(newRole);
     return usuarioRepository.save(user);
+  }
+
+  public Optional<User> findByUsername(String username) {
+    return usuarioRepository.findByNombreUsuario(username);
+  }
+
+  public Optional<User> findById(Long id) {
+    return usuarioRepository.findById(id);
   }
 }
