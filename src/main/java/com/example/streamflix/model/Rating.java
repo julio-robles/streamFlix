@@ -1,6 +1,8 @@
 package com.example.streamflix.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,8 @@ public class Rating {
   private User user;
 
   @Column(name = "score", nullable = false)
+  @Min(1)
+  @Max(5)
   private Integer score; // 1-5
 
   @Column(name = "comment", columnDefinition = "TEXT")
